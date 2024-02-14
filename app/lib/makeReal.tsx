@@ -5,6 +5,9 @@ import { blobToBase64 } from './blobToBase64'
 import { addGridToSvg } from './addGridToSvg'
 import { PreviewShape } from '../PreviewShape/PreviewShape'
 
+import pathsToCoords from '../coordinator/pathsToCoords'
+const autodraw = require('autodraw')
+
 export async function makeReal(editor: Editor, apiKey: string) {
 	// Get the selected shapes (we need at least one)
 	const selectedShapes = editor.getSelectedShapes()
@@ -37,6 +40,21 @@ export async function makeReal(editor: Editor, apiKey: string) {
 	addGridToSvg(svg, grid)
 
 	if (!svg) throw Error(`Could not get the SVG.`)
+
+	const paths = svg.getElementsByTagName('path')
+	const flatCoords = pathsToCoords(paths, 1, 256, 0, 0)
+		.map((path: Array<number>) => {
+			return {
+				x: path[0],
+				y: path[1],
+			}
+		})
+
+	autodraw([flatCoords])
+		.then((res: any) => {
+			console.log(res)
+		})
+	// TODO
 
 	// Turn the SVG into a DataUrl
 	const IS_SAFARI = /^((?!chrome|android).)*safari/i.test(navigator.userAgent)
