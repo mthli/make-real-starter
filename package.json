@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@tldraw/tldraw": "^2.0.0-canary.d0f6ef80fcf9",
+    "autodraw": "^0.1.0",
     "d3-array": "^3.2.4",
     "next": "14.0.3",
     "pathologist": "^0.1.9",
